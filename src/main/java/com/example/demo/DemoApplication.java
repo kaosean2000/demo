@@ -50,7 +50,7 @@ class FakeDDataAccessService implements DDao{
         jdbcTemplate = new JdbcTemplate(source);
         var map = this.jdbcTemplate.queryForList("SELECT * FROM A");
         System.out.println(map);
-        for(int i=1;i<=30;i++){
+        for(int i=1;i<=40;i++){
             for(int j=0;j<map.size();j++) {
                 D d = new D();
                 d.setTitle(i + ": " + Math.random() + " " + map.get(j).get("title"));
