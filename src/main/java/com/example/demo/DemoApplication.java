@@ -27,71 +27,103 @@ public class DemoApplication {
 
     }
 }
+
 @Data
-class D{
+class D {
     int id;
     String title;
 }
-interface DDao{
-    List<D> getList(int from,int limit);
+
+interface DDao {
+    List<D> getList(int from, int limit);
 }
+
 @Repository("fakeDao")
-class FakeDDataAccessService implements DDao{
+class FakeDDataAccessService implements DDao {
     @Autowired
     JdbcTemplate jdbcTemplate;
     List<D> dList = new ArrayList<>();
-    FakeDDataAccessService(){
 
-        DriverManagerDataSource source = new DriverManagerDataSource();
-        source.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        source.setUrl("jdbc:mysql://localhost:3306/mysql");
-        source.setUsername("root");
-        source.setPassword("");
-        jdbcTemplate = new JdbcTemplate(source);
-        var map = this.jdbcTemplate.queryForList("SELECT * FROM A");
-        System.out.println(map);
-        for(int i=1;i<=40;i++){
-            for(int j=0;j<map.size();j++) {
-                D d = new D();
-                d.setTitle(i + ": " + Math.random() + " " + map.get(j).get("title"));
-                dList.add(d);
-            }
+    FakeDDataAccessService() {
+        for (int i = 1; i <= 40; i++) {
+            D d = new D();
+            d.setTitle(i + ": " + Math.random());
+            dList.add(d);
         }
 
     }
+
     @Override
     public List<D> getList(int from, int limit) {
         var list = new ArrayList<D>();
-        for(int i=from;i<from+limit&&i<dList.size();i++)
+        for (int i = from; i < from + limit && i < dList.size(); i++)
             list.add(dList.get(i));
         return list;
     }
 }
+
+@Repository("DBDao")
+class DBDataAccessService implements DDao {
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+    List<D> dList = new ArrayList<>();
+
+    DBDataAccessService() {
+//        DriverManagerDataSource source = new DriverManagerDataSource();
+//        source.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//        source.setUrl("jdbc:mysql://localhost:3306/mysql");
+//        source.setUsername("root");
+//        source.setPassword("");
+//        jdbcTemplate = new JdbcTemplate(source);
+//        var map = this.jdbcTemplate.queryForList("SELECT * FROM A");
+//        System.out.println(map);
+//        for (int i = 1; i <= 40; i++) {
+//            for (int j = 0; j < map.size(); j++) {
+//                D d = new D();
+//                d.setTitle(i + ": " + Math.random() + map.get(j).get("title"));
+//                dList.add(d);
+//            }
+//        }
+    }
+
+    @Override
+    public List<D> getList(int from, int limit) {
+        var list = new ArrayList<D>();
+        for (int i = from; i < from + limit && i < dList.size(); i++)
+            list.add(dList.get(i));
+        return list;
+    }
+}
+
 @Service
-class S{
+class S {
     final DDao dService;
-    S(@Qualifier("fakeDao") DDao d) {
+
+    S(@Qualifier("DBDao") DDao d) {
         this.dService = d;
 
     }
-    List<D> getList(int from,int limit){
-        return dService.getList(from,limit);
+
+    List<D> getList(int from, int limit) {
+        return dService.getList(from, limit);
     }
 
     public int test() {
         return 200;
     }
 }
+
 @RequestMapping("/hello")
 @RestController
-class A{
+class A {
     @Autowired
     S s;
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    List<D> hello(@RequestParam String _limit,@RequestParam String _page){
+    List<D> hello(@RequestParam String _limit, @RequestParam String _page) {
         int limit = Integer.parseInt(_limit);
         int page = Integer.parseInt(_page);
-        int startID = limit*page;
-        return s.getList(startID,limit);
+        int startID = limit * page;
+        return s.getList(startID, limit);
     }
 }
