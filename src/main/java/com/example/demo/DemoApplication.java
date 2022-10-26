@@ -101,7 +101,6 @@ class S {
 
     S(@Qualifier("DBDao") DDao d) {
         this.dService = d;
-
     }
 
     List<D> getList(int from, int limit) {
