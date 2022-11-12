@@ -1,9 +1,7 @@
 package com.example.demo.schedule;
 
 import com.example.demo.DemoApplication;
-import com.example.demo.building.classroom.Classroom;
 import com.example.demo.course.Course;
-import com.example.demo.schedule.Schedule;
 
 import java.util.ArrayList;
 import java.util.Arrays;

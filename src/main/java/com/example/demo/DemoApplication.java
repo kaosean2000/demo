@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import com.example.demo.building.BuildingManager;
-import com.example.demo.building.BuildingRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
