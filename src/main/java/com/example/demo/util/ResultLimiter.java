@@ -1,7 +1,5 @@
 package com.example.demo.util;
 
-import lombok.Data;
-
 import java.util.List;
 
 public class ResultLimiter {

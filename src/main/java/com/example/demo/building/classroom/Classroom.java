@@ -1,17 +1,13 @@
 package com.example.demo.building.classroom;
 
-import com.example.demo.schedule.Schedule;
 import com.example.demo.building.BuildingEnum;
 import com.example.demo.building.IBuilding;
-import com.example.demo.building.classroom.property.*;
 import com.example.demo.dto.ClassroomDatabaseDTO;
+import com.example.demo.schedule.Schedule;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Classroom implements IClassroom ,Comparable {
-    List<IClassroomProperty> propertyList = new ArrayList<>();
+    ClassroomProperties properties = new ClassroomProperties();
     int floor;
     String no;
     IBuilding building;
@@ -30,7 +26,7 @@ public class Classroom implements IClassroom ,Comparable {
         this.longitude = dto.getLongitude();
         var props = dto.getPropertyList();
         for(var prop:props)
-            addProperty(prop);
+            properties.addProperty(prop);
 
     }
     @Override
@@ -49,57 +45,49 @@ public class Classroom implements IClassroom ,Comparable {
     }
 
     @Override
-    public void addProperty(IClassroomProperty property) {
-        if(!hasProperty(property.getClass()))
-            propertyList.add(property);
+    public void addProperty(String property) {
+        properties.addProperty(property);
     }
 
     @Override
-    public boolean hasProperty(Class<? extends IClassroomProperty> clazz) {
-        return propertyList.stream().anyMatch(clazz::isInstance);
+    public boolean hasProperty(String property) {
+        return properties.hasProperty(property);
     }
 
-    @Override
-    public <T extends IClassroomProperty> T getProperty(Class<? extends T> clazz) {
-        var p =  propertyList.stream().filter(clazz::isInstance).findFirst();
-        if(p.isPresent())
-            return null;
-        return (T)p.get();
-    }
 
     @Override
     public boolean isAutoLock() {
-        return !isSelfLearnRoom() && isComputerRoom();
+        return properties.isAutoLock();
     }
 
     @Override
     public boolean isComputerRoom() {
-        return hasProperty(ComputerCP.class);
+        return properties.isComputerRoom();
     }
 
     @Override
     public boolean isSelfLearnRoom() {
-        return hasProperty(SelfLearnCP.class);
+        return properties.isSelfLearnRoom();
     }
 
     @Override
     public boolean isValid() {
-        return !(hasProperty(OfficeCP.class) || hasProperty(RepairCP.class));
+        return properties.isValid();
     }
 
     @Override
     public boolean isValidForFreeUse(Schedule time,int day) {
-        return isValid() && !(isPlayground() || isAutoLock())  && isOpen(time,day);
+        return properties.isValidForFreeUse() && isOpen(time,day);
     }
 
     @Override
     public boolean canSpeak() {
-        return !hasProperty(SelfLearnCP.class);
+        return properties.canSpeak();
     }
 
     @Override
     public boolean isPlayground() {
-        return hasProperty(PlaygroundCP.class);
+        return properties.isPlayground();
     }
 
     @Override
@@ -115,12 +103,6 @@ public class Classroom implements IClassroom ,Comparable {
     @Override
     public int compareTo(@NotNull Object o) {
         if(o instanceof Classroom b){
-//            if(this.getBuildingEnum()!=b.getBuildingEnum())
-//                return this.getBuildingEnum().ordinal()-b.getBuildingEnum().ordinal();
-//            if(this.floor != b.floor)
-//                return this.floor-b.floor;
-//
-//            return this.no.compareTo(b.no);
             return this.getName().compareTo(b.getName());
         }
         return 0;

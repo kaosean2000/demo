@@ -3,9 +3,7 @@ package com.example.demo.dto;
 
 import com.example.demo.building.BuildingManager;
 import com.example.demo.building.IBuilding;
-import com.example.demo.building.classroom.property.IClassroomProperty;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,24 +60,12 @@ public class ClassroomDatabaseDTO {
         this.manager = manager;
     }
 
-    public List<IClassroomProperty> getPropertyList(){
-        List<IClassroomProperty> list = new ArrayList<>();
+    public List<String> getPropertyList(){
         if(property == null || property.isEmpty())
-            return list;
+            return List.of();
         var propertys = property.split(",");
-        for (var prop:propertys){
-            try {
-                Class c = Class.forName("com.example.demo.building.classroom.property."+prop+"");
-                Class<IClassroomProperty> c1 = c.asSubclass(IClassroomProperty.class);
-                list.add(c1.getConstructor().newInstance());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return list;
+        return List.of(propertys);
     }
-
-
 
     public String getClassName() {
         return class_name;
