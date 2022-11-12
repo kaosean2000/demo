@@ -1,9 +1,7 @@
 package com.example.demo.building.classroom;
 
 
-import com.example.demo.building.Building;
 import com.example.demo.building.IBuilding;
-import com.example.demo.building.classroom.property.IClassroomProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +28,10 @@ public class ClassroomBuilder {
     }
 
     @SafeVarargs
-    public final ClassroomBuilder addProperty(Class<? extends IClassroomProperty>... clazz) {
-        for (var c : clazz) {
+    public final ClassroomBuilder addProperty(String ...ss) {
+        for (var s : ss) {
             rooms.forEach(e -> {
-                try {
-                    e.addProperty(c.newInstance());
-                } catch (InstantiationException | IllegalAccessException e1) {
-                    throw new RuntimeException(e1);
-                }
+                e.addProperty(s);
             });
         }
         return this;
