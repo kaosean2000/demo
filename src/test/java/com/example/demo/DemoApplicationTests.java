@@ -1,54 +1,86 @@
 package com.example.demo;
 
-import com.example.demo.building.BuildingUtils;
-import org.junit.Before;
+import com.example.demo.schedule.Schedule;
+import com.example.demo.service.GetClassroomUsageService;
+import com.example.demo.service.GetFreeClassroomService;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DemoApplication.class)
 @WebAppConfiguration
+@AutoConfigureMockMvc
 public class DemoApplicationTests {
-    //@Autowired
-    //private WebApplicationContext webApplicationContext;
-   // MockMvc mvc;
-
     @Autowired
-    S s;
+    private MockMvc mvc;
     @Autowired
-    DBDataAccessService dao;
-    @Before
-    public void setup() {
-       // mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
+    GetFreeClassroomService getFreeClassroomService;
+    @Autowired
+    GetClassroomUsageService getClassroomUsageService;
 
-    /**
-     *把資料庫裡所有的教室轉換成大樓代號後，檢查室否有找不到的大樓代號。
-     */
     @Test
-    void buildingNotFoundTest() {
-        var list = dao.query("select 教室 from test.A group by 教室;");
-        var list1=
-                list.stream()
-                .map(e->e.get("教室"))
-                .filter(e->!BuildingUtils.getBuildingFromString(e.toString()))
-                .toList();
-        Assertions.assertEquals(list1.toString(),"[]");
+    public void f2() throws Exception {
+        mvc.perform(
+                MockMvcRequestBuilders
+                        .post("/getFreeClassroom")
+                        .param("_time","D6-E2")
+                        .param("_day","3")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0]").value("ES302"));
     }
     @Test
-    void test1() {
+    public void f1(){
+        var manager = DemoApplication.defaultBuildingManager;
+        var d = manager.getContainsRooms("LE4A","LE403","ES");
+        Assertions.assertEquals(d.toString(), "[ES217, ES317, ES417, ES418, ES517, ES509, ES301, ES302, ES401, ES101, ES107, ES305, ES404, ES108, ES306, ES405, ES504, ES105, ES501, ES106, ES304, ES309, ES408, ES507, ES409, ES508, ES307, ES406, ES505, ES308, ES407, ES506]");
+
+        var d1 = manager.getRoom("ES301").get();
+        Assertions.assertEquals(d1.isValidForFreeUse(Schedule.E1,1),false);
+
+        var d2 = manager.getRoom("ES306").get();
+        Assertions.assertEquals(d2.isValidForFreeUse(Schedule.E1,1),true);
+        Assertions.assertEquals(d2.canSpeak(),true);
+
+//        var d3 = manager.getRoom("LE401B").get();
+//        Assertions.assertEquals(d3.isValidForFreeUse(Schedule.E1,1),true);
+//        Assertions.assertEquals(d3.canSpeak(),false);
+
+
+        System.out.println(d);
+    }
+    @Test
+    public void test1() {
         long time = System.currentTimeMillis();
-        for(int i=0;i<100;i++){
-
-            s.getFree("D0","E4",1);
-            s.getFree("D7","E2",5);
-            s.getClassroomUsage(null,null,2);
-            s.getClassroomUsage(null,null,4);
-
+        for(int j=0;j<15;j++){
+            try {
+                f("/getFreeClassroom?_time=D0-E4&_day=1");
+                f("/getFreeClassroom?_time=D0-E4&_day=5");
+                f("/getClassroomUsage?_day=2");
+                f("/getClassroomUsage?_day=1");
+                f("/getClassroomUsage?_day=4");
+                f("/getClassroomUsage?_day=6");
+                f("/getClassroomUsage?_day=3");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
-        System.out.println(System.currentTimeMillis()-time);
+
+        System.out.println(System.currentTimeMillis() - time);
+    }
+
+    public void f(String url1) throws Exception {
+        var result = mvc.perform(MockMvcRequestBuilders.post(url1).accept(MediaType.APPLICATION_JSON)).andReturn();
     }
 }

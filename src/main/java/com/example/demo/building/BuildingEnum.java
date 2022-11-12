@@ -1,6 +1,6 @@
 package com.example.demo.building;
 
-public enum BuildingEnum {
+public enum BuildingEnum{
     LI("LI", "文華樓"), LF("LF", "文友樓"), LE("LE", "文開樓"),
     LP("LP", "積健樓"), LG("LG", "文學院研究所大樓"),
     AA("AA", "應用美術學系教室"), AL("AL", "景觀設計學系教室"),
