@@ -1,4 +1,6 @@
-package com.example.demo.building;
+package com.example.demo.building.builder;
+
+import com.example.demo.building.IBuilding;
 
 @Deprecated
 public class BuildingRegistry {

@@ -13,7 +13,7 @@ public class Classroom implements IClassroom ,Comparable {
     String no;
     IBuilding building;
     String info,latitude,longitude;
-    Classroom(IBuilding building,int floor,String no){
+    public Classroom(IBuilding building, int floor, String no){
         this.building = building;
         this.floor = floor;
         this.no = no;

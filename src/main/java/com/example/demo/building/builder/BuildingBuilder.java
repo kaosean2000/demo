@@ -1,12 +1,15 @@
-package com.example.demo.building.classroom;
+package com.example.demo.building.builder;
 
-import com.example.demo.DemoApplication;
-import com.example.demo.building.*;
+import com.example.demo.building.Building;
+import com.example.demo.building.BuildingEnum;
+import com.example.demo.building.BuildingManager;
+import com.example.demo.building.IBuilding;
+import org.jetbrains.annotations.TestOnly;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Deprecated
+@TestOnly
 public class BuildingBuilder {
     IBuilding building;
     public BuildingBuilder( BuildingEnum buildingEnum){

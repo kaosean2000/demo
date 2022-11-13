@@ -2,17 +2,15 @@ package com.example.demo;
 
 import com.example.demo.building.BuildingEnum;
 import com.example.demo.building.BuildingManager;
-import com.example.demo.building.classroom.BuildingBuilder;
+import com.example.demo.building.builder.BuildingBuilder;
 import com.example.demo.service.BuildingService;
 import com.example.demo.service.GetClassroomUsageService;
 import com.example.demo.service.GetFreeClassroomService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;

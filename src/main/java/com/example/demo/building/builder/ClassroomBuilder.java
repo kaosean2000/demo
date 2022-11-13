@@ -1,12 +1,14 @@
-package com.example.demo.building.classroom;
+package com.example.demo.building.builder;
 
 
 import com.example.demo.building.IBuilding;
+import com.example.demo.building.classroom.Classroom;
+import org.jetbrains.annotations.TestOnly;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Deprecated
+@TestOnly
 public class ClassroomBuilder {
     BuildingBuilder prevBuilder;
     IBuilding building;
