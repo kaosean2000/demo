@@ -1,5 +1,7 @@
 package com.example.demo.util;
 
+import org.springframework.lang.Nullable;
+
 import java.util.List;
 
 public class ResultLimiter {
@@ -24,6 +26,12 @@ public class ResultLimiter {
                 .skip(getStartIndex())
                 .limit(getLength())
                 .toList();
+    }
+    @Nullable
+    public static ResultLimiter create(int limit,int page){
+        if(limit==0)
+            return null;
+        return new ResultLimiter(limit,page);
     }
     public static <T> List<T>  getLimitedList(ResultLimiter limit, List<T> list){
         return limit == null ? list:limit.getLimitedList(list);
