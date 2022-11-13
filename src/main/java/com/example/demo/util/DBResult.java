@@ -1,10 +1,10 @@
-package com.example.demo.vo;
+package com.example.demo.util;
 
 import java.util.List;
 import java.util.Map;
 
-public class DBResultVO {
-    public DBResultVO(List<Map<String, Object>> result) {
+public class DBResult {
+    public DBResult(List<Map<String, Object>> result) {
         this.result = result;
     }
 

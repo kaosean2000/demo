@@ -33,10 +33,12 @@ public class Tests1 {
     //@MockBean
 
     BuildingManager manager = new BuildingManager();
+    @Autowired
     BuildingService buildingService;
 
     @Test
     public void f1() throws Exception {
+        BuildingManager old = buildingService.getManager();
         var SF = new BuildingBuilder(BuildingEnum.SF)
                 .addRoom(1,"01").addProperty("ComputerCP").finish()
                 .addRoom(1,"02").addProperty("SelfLearnCP","ComputerCP").finish()
@@ -65,5 +67,6 @@ public class Tests1 {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         System.out.println(result.getRequest().getContentAsString());
+        buildingService.setManager(old);
     }
 }

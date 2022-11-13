@@ -1,13 +1,11 @@
 package com.example.demo.schedule;
 
-import com.example.demo.building.classroom.Classroom;
 import com.example.demo.course.Course;
 import com.example.demo.service.BuildingService;
-import com.example.demo.vo.DBResultVO;
+import com.example.demo.util.DBResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ClassroomScheduleInspector {
 
@@ -27,7 +25,7 @@ public class ClassroomScheduleInspector {
         list.add(c);
     }
 
-    public void loadCourseData(DBResultVO result) {
+    public void loadCourseData(DBResult result) {
         reset();
         var list1 = result.getResult();
         for(var e:list1){
