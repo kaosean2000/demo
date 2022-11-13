@@ -1,12 +1,11 @@
 package com.example.demo.schedule;
 
 import com.example.demo.DemoApplication;
+import com.example.demo.building.classroom.Classroom;
 import com.example.demo.course.Course;
+import com.example.demo.service.BuildingService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ClassroomSchedule {
     public String name;
@@ -26,8 +25,8 @@ public class ClassroomSchedule {
         Arrays.fill(time,null);
     }
 
-    public boolean isFree(int day,String start,String end){
-        var room = DemoApplication.defaultBuildingManager.getRoom(name);
+    public boolean isFree(BuildingService service, int day, String start, String end){
+        var room = service.getRoom(name);
         int _start = Schedule.valueOf(start).ordinal();
         int _end   = Schedule.valueOf(end).ordinal();
         for(int i=_start;i<=_end;i++){

@@ -1,10 +1,13 @@
 package com.example.demo.schedule;
 
+import com.example.demo.building.classroom.Classroom;
 import com.example.demo.course.Course;
+import com.example.demo.service.BuildingService;
 import com.example.demo.vo.DBResultVO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ClassroomScheduleInspector {
 
@@ -44,9 +47,9 @@ public class ClassroomScheduleInspector {
         return list;
     }
 
-    public List<String> getFreeClassroomList(int day, String start, String end) {
+    public List<String> getFreeClassroomList(BuildingService service, int day, String start, String end) {
         return list.stream()
-                .filter(e -> e.isFree(day,start, end))
+                .filter(e -> e.isFree(service,day,start, end))
                 .map(e -> e.name)
                 .sorted((e1,e2)->{
                     if(e1.length()==e2.length())

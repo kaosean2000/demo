@@ -1,6 +1,7 @@
 package com.example.demo.building;
 
 import com.example.demo.building.classroom.IClassroom;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 

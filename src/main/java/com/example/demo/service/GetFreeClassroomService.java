@@ -13,14 +13,16 @@ import java.util.List;
 public class GetFreeClassroomService {
     @Autowired
     DatabaseInterfaceService databaseService;
+    @Autowired
+    BuildingService buildingService;
     public List<String> getFree(GetFreeClassroomDTO dto) {
         ClassroomScheduleInspector manager = new ClassroomScheduleInspector();
         var room = dto.getClassrooms();
-        manager.addClassroom(DemoApplication.defaultBuildingManager.getContainsRooms(room));
+        manager.addClassroom(buildingService.getContainsRooms(room));
         var dataList = databaseService.loadDataBySemesterAndDay(dto.getSemester(),dto.getDay());
         manager.loadCourseData(dataList);
         var result = manager.getFreeClassroomList(
-                Integer.parseInt(dto.getDay()), dto.getStartTime(),dto.getEndTime());
+                buildingService,Integer.parseInt(dto.getDay()), dto.getStartTime(),dto.getEndTime());
         return ResultLimiter.getLimitedList(dto.getLimit(),result);
     }
 }

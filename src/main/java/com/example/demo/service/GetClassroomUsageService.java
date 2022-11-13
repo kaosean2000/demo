@@ -14,13 +14,14 @@ import java.util.List;
 public class GetClassroomUsageService {
     @Autowired
     DatabaseInterfaceService databaseService;
+    @Autowired
+    BuildingService buildingService;
     public List<ClassroomSchedule> getClassroomUsage(ClassroomUsageDTO dto) {
 
         ClassroomScheduleInspector manager = new ClassroomScheduleInspector();
 
         var roomsStr = dto.getClassrooms();
-        var buildingManager = DemoApplication.defaultBuildingManager;
-        var rooms = buildingManager.getContainsRooms(roomsStr);
+        var rooms = buildingService.getContainsRooms(roomsStr);
         manager.addClassroom(rooms);
 
         var dbResult = databaseService.loadDataBySemesterAndDay(dto.getSemester(),dto.getDay());

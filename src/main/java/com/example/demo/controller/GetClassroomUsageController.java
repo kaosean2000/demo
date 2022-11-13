@@ -22,12 +22,11 @@ public class GetClassroomUsageController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<ClassroomSchedule> getClassroomUsage(String[] _classroom,
                                               @RequestParam(defaultValue = "1") int _day,
-                                              @RequestParam(defaultValue = "-1") int _limit,
+                                              @RequestParam(defaultValue = "0") int _limit,
                                               @RequestParam(defaultValue = "0") int _page) {
 
         var dto = new ClassroomUsageDTO(_classroom,_day+"");
-        if(_limit!=-1)
-            dto.setLimit(new ResultLimiter(_limit,_page));
+        dto.setLimit(ResultLimiter.create(_limit,_page));
         return getClassroomUsageService.getClassroomUsage(dto);
     }
 

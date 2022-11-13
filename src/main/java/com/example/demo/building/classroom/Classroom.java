@@ -6,6 +6,7 @@ import com.example.demo.dto.ClassroomDatabaseDTO;
 import com.example.demo.schedule.Schedule;
 import org.jetbrains.annotations.NotNull;
 
+
 public class Classroom implements IClassroom ,Comparable {
     ClassroomProperties properties = new ClassroomProperties();
     int floor;
