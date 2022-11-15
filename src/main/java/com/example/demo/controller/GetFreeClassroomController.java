@@ -23,8 +23,7 @@ public class GetFreeClassroomController {
                                   @RequestParam(defaultValue = "0") int _page){
 
         var dto = new GetFreeClassroomDTO(_classroom,_day+"",_time);
-        if(_limit!=0)
-            dto.setLimit(new ResultLimiter(_limit,_page));
+        dto.setLimit(ResultLimiter.create(_limit,_page));
         return getFreeClassroomService.getFree(dto);
     }
 }

@@ -4,6 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ClassroomProperties {
+    public static final String Computer = "Computer";
+    public static final String SelfLearn = "SelfLearn";
+    public static final String Office = "Office";
+    public static final String Repair = "Repair";
+    public static final String Playground = "Playground";
     Set<String> properties = new HashSet<>();
     public void addProperty(String property) {
         properties.add(property);
@@ -17,15 +22,15 @@ public class ClassroomProperties {
     }
 
     public boolean isComputerRoom() {
-        return hasProperty("ComputerCP");
+        return hasProperty(Computer);
     }
 
     public boolean isSelfLearnRoom() {
-        return hasProperty("SelfLearnCP");
+        return hasProperty(SelfLearn);
     }
 
     public boolean isValid() {
-        return !(hasProperty("OfficeCP") || hasProperty("RepairCP"));
+        return !(hasProperty(Office) || hasProperty(Repair));
     }
 
     public boolean isValidForFreeUse() {
@@ -33,11 +38,11 @@ public class ClassroomProperties {
     }
 
     public boolean canSpeak() {
-        return !hasProperty("SelfLearnCP");
+        return !hasProperty(SelfLearn);
     }
 
     public boolean isPlayground() {
-        return hasProperty("PlaygroundCP");
+        return hasProperty(Playground);
     }
 
 }

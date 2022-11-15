@@ -14,11 +14,11 @@ public class LoadBuildingFromDB_DAO implements ILoadBuildingDAO{
     @Override
     public void loadData(BuildingManager manager) {
         var vo = service.loadClassroomFromCourse();
-        for(var data:vo.getResult()){
+        for(var data:vo.result()){
             manager.registryRoom((String)data.get("classroom"));
         }
         var vo1 = service.loadClassroomFromRoom();
-        for(var data:vo1.getResult()){
+        for(var data:vo1.result()){
             var dto = new ClassroomDatabaseDTO(manager,data);
             Classroom room = getClassroom(dto);
             dto.getBuilding().addClassroom(room);

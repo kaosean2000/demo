@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ClassroomScheduleInspector {
 
-    List<ClassroomSchedule> list = new ArrayList<>();
+    private final List<ClassroomSchedule> list = new ArrayList<>();
 
     public void addClassroom(List<String> s) {
         s.forEach(this::addClassroom);
@@ -27,15 +27,17 @@ public class ClassroomScheduleInspector {
 
     public void loadCourseData(DBResult result) {
         reset();
-        var list1 = result.getResult();
+        var list1 = result.result();
         for(var e:list1){
             String classroom = e.get("教室").toString();
             String time = e.get("節次").toString();
             String start = time.substring(0, 2);
             String end = time.substring(3);
             var course = new Course(e);
-            list.stream().filter(e1 -> e1.name.equals(classroom))
-                    .forEach(e2 -> e2.addCourse(start, end, course));
+            var _classroom = list.stream()
+                    .filter(e1 -> e1.name.equals(classroom))
+                    .findAny();
+            _classroom.ifPresent(e2 -> e2.addCourse(start, end, course));
         }
     }
     private void reset(){
